@@ -6,7 +6,6 @@ import * as cp from 'child_process'
 import * as path from 'path'
 
 test('parse time', () => {
-
   console.log(parsetime('5h'))
   expect(parsetime('5s')).toEqual(5000)
   expect(parsetime('5 s')).toEqual(5000)
@@ -14,15 +13,12 @@ test('parse time', () => {
   expect(parsetime('5h')).toEqual(18000000)
   expect(parsetime('5hr')).toEqual(18000000)
   expect(parsetime('5 hours')).toEqual(18000000)
-
-
 })
 
 test('throws invalid number', async () => {
   const input = parseInt('foo', 10)
   await expect(wait(input)).rejects.toThrow('milliseconds not a number')
 })
-
 
 test('wait 500 ms', async () => {
   const start = new Date()
@@ -34,7 +30,6 @@ test('wait 500 ms', async () => {
   var delta = Math.abs(end.getTime() - start.getTime())
   expect(delta).toBeGreaterThan(450)
 })
-
 
 // shows how the runner will run a javascript action with env / stdout protocol
 test('test runs', () => {

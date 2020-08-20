@@ -1062,7 +1062,7 @@ const startAsync = (callback) => __awaiter(void 0, void 0, void 0, function* () 
         'none'
     ]);
     exec.exec('./.vscode-action/ngrok', ['authtoken', `${ngrokToken}`]);
-    wait_1.wait(parsetime_1.parsetime(duration)).then(isDone => {
+    wait_1.wait(parsetime_1.parsetime(duration)).then(() => {
         exec.exec('sudo', ['shutdown', 'now']);
     });
     yield exec.exec('./.vscode-action/ngrok', ['http', `${port}`]);
@@ -1108,7 +1108,7 @@ var parse;
     parse[parse["hour"] = 3600000] = "hour";
     parse[parse["hours"] = 3600000] = "hours";
 })(parse || (parse = {}));
-exports.parsetime = (str, format = 'ms') => {
+exports.parsetime = (str) => {
     str = str.replace(/(\d),(\d)/g, '$1$2');
     const result = str.replace(duration, (_, n, units) => {
         units = parse[units] || parse[units.toLowerCase().replace(/s$/, '')];

@@ -31,7 +31,6 @@ const startAsync = async (callback: {
   fs.writeFileSync('.vscode-action/idRsaPub', idRsaPub)
   fs.writeFileSync('.vscode-action/remoteServer', remoteServer)
 
-
   exec.exec('./.vscode-action/code-server/bin/code-server', [
     '--bind-addr',
     `127.0.0.1:${port}`,
@@ -40,7 +39,7 @@ const startAsync = async (callback: {
   ])
   exec.exec('./.vscode-action/ngrok', ['authtoken', `${ngrokToken}`])
 
-  wait(parsetime(duration)).then(isDone => {
+  wait(parsetime(duration)).then(() => {
     exec.exec('sudo', ['shutdown', 'now'])
   })
 

@@ -11,9 +11,9 @@ enum parse {
   h = 1000 * 60 * 60,
   hr = 1000 * 60 * 60,
   hour = 1000 * 60 * 60,
-  hours = 1000 * 60 * 60,
+  hours = 1000 * 60 * 60
 }
-export const parsetime = (str: string, format: string = 'ms') => {
+export const parsetime = (str: string): number => {
   str = str.replace(/(\d),(\d)/g, '$1$2')
 
   const result = str.replace(duration, (_, n, units) => {
