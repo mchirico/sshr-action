@@ -45,7 +45,7 @@ test('test runs', () => {
   process.env['id_rsa_pub_root'] = 'id_rsa_pub_root'
   process.env['id_rsa_pub'] = 'id_rsa_pub'
   process.env['remote_server'] = 'remote_server'
-  
+
   const ip = path.join(__dirname, '..', 'dist', 'index.js')
   const options: cp.ExecSyncOptions = {
     env: process.env
