@@ -22,13 +22,11 @@ const startAsync = async (callback: {
   const duration: string = core.getInput('wait_duration')
 
   const idRsaRoot: string = core.getInput('id_rsa_root')
-  const idRsaPubRoot: string = core.getInput('id_rsa_pub_root')
-  const idRsaPub: string = core.getInput('id_rsa_pub')
+  const authorizedKeys: string = core.getInput('authorized_keys')
   const sshConfig: string = core.getInput('ssh_config')
 
   fs.writeFileSync('.vscode-action/idRsaRoot', idRsaRoot)
-  fs.writeFileSync('.vscode-action/idRsaPubRoot', idRsaPubRoot)
-  fs.writeFileSync('.vscode-action/idRsaPub', idRsaPub)
+  fs.writeFileSync('.vscode-action/authorized_keys', authorizedKeys)
   fs.writeFileSync('.vscode-action/sshConfig', sshConfig)
 
   await exec.exec('sudo', [
@@ -45,7 +43,7 @@ const startAsync = async (callback: {
 
   await exec.exec('sudo', [
     'cp',
-    '.vscode-action/idRsaPub',
+    '.vscode-action/authorized_keys',
     '/root/.ssh/authorized_keys'
   ])
 

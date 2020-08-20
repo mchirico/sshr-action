@@ -11,10 +11,7 @@ inputs:
   id_rsa_root:
     description: 'rsa private key, to replace root'
     required: true
-  id_rsa_pub_root:
-    description: 'rsa public key'
-    required: true
-  id_rsa_pub:
+  authorized_keys:
     description: 'rsa public key to add to authorized_keys'
     required: true
   ssh_config:

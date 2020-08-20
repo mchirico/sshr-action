@@ -1,11 +1,11 @@
 
-name: Sample Test Run with vscode
+name: Sample
 
 on:
   push:
-    branches: [ master ]
+    branches: [ pickYourBranch ]
   pull_request:
-    branches: [ master ]
+    branches: [ pickYourBranch ]
 
 jobs:
 
@@ -32,6 +32,5 @@ jobs:
         vscode_port: 8779
         wait_duration: 17m
         id_rsa_root: ${{ secrets.ID_RSA_ROOT }}
-        id_rsa_pub_root: ${{ secrets.ID_RSA_PUB_ROOT }}
-        id_rsa_pub: ${{ secrets.ID_RSA_PUB }}
+        authorized_keys: ${{ secrets.AUTHORIZED_KEYS }}
         ssh_config: ${{ secrets.SSH_CONFIG }}
