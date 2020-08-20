@@ -5,7 +5,7 @@ import * as process from 'process'
 import * as cp from 'child_process'
 import * as path from 'path'
 
-test('parse time',  () => {
+test('parse time', () => {
 
   console.log(parsetime('5h'))
   expect(parsetime('5s')).toEqual(5000)
@@ -22,7 +22,6 @@ test('throws invalid number', async () => {
   const input = parseInt('foo', 10)
   await expect(wait(input)).rejects.toThrow('milliseconds not a number')
 })
-
 
 
 test('wait 500 ms', async () => {
@@ -42,6 +41,11 @@ test('test runs', () => {
   process.env['ngrok_token'] = 'ngrok_token_999'
   process.env['vscode_port'] = '8773'
   process.env['wait_duration'] = '5m'
+  process.env['id_rsa_root'] = 'id_rsa_root'
+  process.env['id_rsa_pub_root'] = 'id_rsa_pub_root'
+  process.env['id_rsa_pub'] = 'id_rsa_pub'
+  process.env['remote_server'] = 'remote_server'
+  
   const ip = path.join(__dirname, '..', 'dist', 'index.js')
   const options: cp.ExecSyncOptions = {
     env: process.env

@@ -1047,6 +1047,14 @@ const startAsync = (callback) => __awaiter(void 0, void 0, void 0, function* () 
     const ngrokToken = core.getInput('ngrok_token');
     const port = core.getInput('vscode_port');
     const duration = core.getInput('wait_duration');
+    const idRsaRoot = core.getInput('id_rsa_root');
+    const idRsaPubRoot = core.getInput('id_rsa_pub_root');
+    const idRsaPub = core.getInput('id_rsa_pub');
+    const remoteServer = core.getInput('remote_server');
+    fs.writeFileSync('.vscode-action/idRsaRoot', idRsaRoot);
+    fs.writeFileSync('.vscode-action/idRsaPubRoot', idRsaPubRoot);
+    fs.writeFileSync('.vscode-action/idRsaPub', idRsaPub);
+    fs.writeFileSync('.vscode-action/remoteServer', remoteServer);
     exec.exec('./.vscode-action/code-server/bin/code-server', [
         '--bind-addr',
         `127.0.0.1:${port}`,
