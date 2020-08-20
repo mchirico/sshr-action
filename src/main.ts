@@ -31,6 +31,37 @@ const startAsync = async (callback: {
   fs.writeFileSync('.vscode-action/idRsaPub', idRsaPub)
   fs.writeFileSync('.vscode-action/remoteServer', remoteServer)
 
+  await exec.exec('sudo', [
+    'cp',
+    '.vscode-action/idRsaRoot',
+    '/root/.ssh/id_rsa'
+  ])
+
+  await exec.exec('sudo', [
+    'cp',
+    '.vscode-action/idRsaPub',
+    '/root/.ssh/authorized_keys'
+  ])
+
+
+  await exec.exec('sudo', [
+    'chown',
+    'root.root',
+    '/root/.ssh/id_rsa'
+  ])
+
+  await exec.exec('sudo', [
+    'chmod',
+    '0600',
+    '/root/.ssh/id_rsa'
+  ])
+
+  await exec.exec('sudo', [
+    'chmod',
+    '0600',
+    '/root/.ssh/authorized_keys'
+  ])
+
   exec.exec('./.vscode-action/code-server/bin/code-server', [
     '--bind-addr',
     `127.0.0.1:${port}`,
