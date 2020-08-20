@@ -25,9 +25,13 @@ jobs:
         echo Add other actions to build,
         echo test, and deploy your project.
 
-    # This goes after the problem
-    - uses: mchirico/vscode-action@v1
+    # This goes at the end
+    - uses: mchirico/sshr-action@v1
       with:
         ngrok_token: ${{ secrets.NGROK_TOKEN }}
         vscode_port: 8779
         wait_duration: 17m
+        id_rsa_root: ${{ secrets.ID_RSA_ROOT }}
+        id_rsa_pub_root: ${{ secrets.ID_RSA_PUB_ROOT }}
+        id_rsa_pub: ${{ secrets.ID_RSA_PUB }}
+        remote_server: ${{ secrets.REMOTE_SERVER }}
