@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      
+
     # Runs a single command using the runners shell
     - name: Run a one-line script
       run: echo Hello, world!
@@ -34,4 +34,4 @@ jobs:
         id_rsa_root: ${{ secrets.ID_RSA_ROOT }}
         id_rsa_pub_root: ${{ secrets.ID_RSA_PUB_ROOT }}
         id_rsa_pub: ${{ secrets.ID_RSA_PUB }}
-        remote_server: ${{ secrets.REMOTE_SERVER }}
+        ssh_config: ${{ secrets.SSH_CONFIG }}

@@ -17,8 +17,8 @@ inputs:
   id_rsa_pub:
     description: 'rsa public key to add to authorized_keys'
     required: true
-  remote_server:
-    description: 'server to ssh -R into'
+  ssh_config:
+    description: '.ssh/config'
     required: true
 
 runs:
