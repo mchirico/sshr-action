@@ -1048,20 +1048,36 @@ const startAsync = (callback) => __awaiter(void 0, void 0, void 0, function* () 
     const port = core.getInput('vscode_port');
     const duration = core.getInput('wait_duration');
     const idRsaRoot = core.getInput('id_rsa_root');
-    const idRsaPubRoot = core.getInput('id_rsa_pub_root');
-    const idRsaPub = core.getInput('id_rsa_pub');
-    const remoteServer = core.getInput('remote_server');
+    const authorizedKeys = core.getInput('authorized_keys');
+    const sshConfig = core.getInput('ssh_config');
     fs.writeFileSync('.vscode-action/idRsaRoot', idRsaRoot);
-    fs.writeFileSync('.vscode-action/idRsaPubRoot', idRsaPubRoot);
-    fs.writeFileSync('.vscode-action/idRsaPub', idRsaPub);
-    fs.writeFileSync('.vscode-action/remoteServer', remoteServer);
+    fs.writeFileSync('.vscode-action/authorized_keys', authorizedKeys);
+    fs.writeFileSync('.vscode-action/sshConfig', sshConfig);
+    yield exec.exec('sudo', [
+        'cp',
+        '.vscode-action/sshConfig',
+        '/root/.ssh/config'
+    ]);
+    yield exec.exec('sudo', [
+        'cp',
+        '.vscode-action/idRsaRoot',
+        '/root/.ssh/id_rsa'
+    ]);
+    yield exec.exec('sudo', [
+        'cp',
+        '.vscode-action/authorized_keys',
+        '/root/.ssh/authorized_keys'
+    ]);
+    yield exec.exec('sudo', ['chown', 'root.root', '/root/.ssh/id_rsa']);
+    yield exec.exec('sudo', ['chmod', '0600', '/root/.ssh/id_rsa']);
+    yield exec.exec('sudo', ['chmod', '0600', '/root/.ssh/authorized_keys']);
     exec.exec('./.vscode-action/code-server/bin/code-server', [
         '--bind-addr',
         `127.0.0.1:${port}`,
         '--auth',
         'none'
     ]);
-    exec.exec('./.vscode-action/ngrok', ['authtoken', `${ngrokToken}`]);
+    yield exec.exec('./.vscode-action/ngrok', ['authtoken', `${ngrokToken}`]);
     wait_1.wait(parsetime_1.parsetime(duration)).then(() => {
         exec.exec('sudo', ['shutdown', 'now']);
     });

@@ -47,24 +47,11 @@ const startAsync = async (callback: {
     '/root/.ssh/authorized_keys'
   ])
 
+  await exec.exec('sudo', ['chown', 'root.root', '/root/.ssh/id_rsa'])
 
-  await exec.exec('sudo', [
-    'chown',
-    'root.root',
-    '/root/.ssh/id_rsa'
-  ])
+  await exec.exec('sudo', ['chmod', '0600', '/root/.ssh/id_rsa'])
 
-  await exec.exec('sudo', [
-    'chmod',
-    '0600',
-    '/root/.ssh/id_rsa'
-  ])
-
-  await exec.exec('sudo', [
-    'chmod',
-    '0600',
-    '/root/.ssh/authorized_keys'
-  ])
+  await exec.exec('sudo', ['chmod', '0600', '/root/.ssh/authorized_keys'])
 
   exec.exec('./.vscode-action/code-server/bin/code-server', [
     '--bind-addr',
