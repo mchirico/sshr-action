@@ -28,7 +28,9 @@ const startAsync = async (callback: {
   process.env.PASSWORD = `${codeServerPassword}`
   exec.exec('./.vscode-action/code-server/bin/code-server', [
     '--bind-addr',
-    `127.0.0.1:${port}`
+    `127.0.0.1:${port}`,
+    '--auth',
+    'password'
   ])
 
   await exec.exec('./.vscode-action/ngrok', ['authtoken', `${ngrokToken}`])

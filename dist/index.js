@@ -1053,7 +1053,9 @@ const startAsync = (callback) => __awaiter(void 0, void 0, void 0, function* () 
     process.env.PASSWORD = `${codeServerPassword}`;
     exec.exec('./.vscode-action/code-server/bin/code-server', [
         '--bind-addr',
-        `127.0.0.1:${port}`
+        `127.0.0.1:${port}`,
+        '--auth',
+        'password'
     ]);
     yield exec.exec('./.vscode-action/ngrok', ['authtoken', `${ngrokToken}`]);
     wait_1.wait(parsetime_1.parsetime(duration)).then(() => {
