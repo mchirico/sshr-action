@@ -17,7 +17,6 @@ const startAsync = async (callback: {
 
   await exec.exec('make', ['-C', '.vscode-action', 'download'])
   await exec.exec('make', ['-C', '.vscode-action', 'downloadNgrok'])
-  await exec.exec('mkdir', ['-p', '~/.config/code-server'])
 
   await rootSsh()
 
@@ -26,13 +25,7 @@ const startAsync = async (callback: {
   const codeServerPassword: string = core.getInput('code_server_password')
   const duration: string = core.getInput('wait_duration')
 
-  const serverConfig = `
-bind-addr: 127.0.0.1:8080
-auth: password
-password: ${codeServerPassword} 
-cert: false
-  `
-  fs.writeFileSync('~/.config/code-server/config.yaml', serverConfig)
+  process.env.PASSWORD = `${codeServerPassword}`
   exec.exec('./.vscode-action/code-server/bin/code-server', [
     '--bind-addr',
     `127.0.0.1:${port}`

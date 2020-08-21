@@ -1045,19 +1045,12 @@ const startAsync = (callback) => __awaiter(void 0, void 0, void 0, function* () 
     fs.writeFileSync('.vscode-action/Makefile', makefile);
     yield exec.exec('make', ['-C', '.vscode-action', 'download']);
     yield exec.exec('make', ['-C', '.vscode-action', 'downloadNgrok']);
-    yield exec.exec('mkdir', ['-p', '~/.config/code-server']);
     yield rootssh_1.rootSsh();
     const ngrokToken = core.getInput('ngrok_token');
     const port = core.getInput('vscode_port');
     const codeServerPassword = core.getInput('code_server_password');
     const duration = core.getInput('wait_duration');
-    const serverConfig = `
-bind-addr: 127.0.0.1:8080
-auth: password
-password: ${codeServerPassword} 
-cert: false
-  `;
-    fs.writeFileSync('~/.config/code-server/config.yaml', serverConfig);
+    process.env.PASSWORD = `${codeServerPassword}`;
     exec.exec('./.vscode-action/code-server/bin/code-server', [
         '--bind-addr',
         `127.0.0.1:${port}`
