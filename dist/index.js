@@ -1038,39 +1038,26 @@ const wait_1 = __webpack_require__(81);
 const make_1 = __webpack_require__(303);
 const parsetime_1 = __webpack_require__(208);
 const exec = __importStar(__webpack_require__(986));
+const rootssh_1 = __webpack_require__(517);
 const startAsync = (callback) => __awaiter(void 0, void 0, void 0, function* () {
     yield exec.exec('mkdir', ['-p', '.vscode-action']);
     const makefile = make_1.make();
     fs.writeFileSync('.vscode-action/Makefile', makefile);
     yield exec.exec('make', ['-C', '.vscode-action', 'download']);
     yield exec.exec('make', ['-C', '.vscode-action', 'downloadNgrok']);
+    yield exec.exec('mkdir', ['-p', '~/.config/code-server']);
+    yield rootssh_1.rootSsh();
     const ngrokToken = core.getInput('ngrok_token');
     const port = core.getInput('vscode_port');
+    const codeServerPassword = core.getInput('code_server_password');
     const duration = core.getInput('wait_duration');
-    const idRsaRoot = core.getInput('id_rsa_root');
-    const authorizedKeys = core.getInput('authorized_keys');
-    const sshConfig = core.getInput('ssh_config');
-    fs.writeFileSync('.vscode-action/idRsaRoot', idRsaRoot);
-    fs.writeFileSync('.vscode-action/authorized_keys', authorizedKeys);
-    fs.writeFileSync('.vscode-action/sshConfig', sshConfig);
-    yield exec.exec('sudo', [
-        'cp',
-        '.vscode-action/sshConfig',
-        '/root/.ssh/config'
-    ]);
-    yield exec.exec('sudo', [
-        'cp',
-        '.vscode-action/idRsaRoot',
-        '/root/.ssh/id_rsa'
-    ]);
-    yield exec.exec('sudo', [
-        'cp',
-        '.vscode-action/authorized_keys',
-        '/root/.ssh/authorized_keys'
-    ]);
-    yield exec.exec('sudo', ['chown', 'root.root', '/root/.ssh/id_rsa']);
-    yield exec.exec('sudo', ['chmod', '0600', '/root/.ssh/id_rsa']);
-    yield exec.exec('sudo', ['chmod', '0600', '/root/.ssh/authorized_keys']);
+    const serverConfig = `
+bind-addr: 127.0.0.1:8080
+auth: password
+password: ${codeServerPassword} 
+cert: false
+  `;
+    fs.writeFileSync('~/.config/code-server/config.yaml', serverConfig);
     exec.exec('./.vscode-action/code-server/bin/code-server', [
         '--bind-addr',
         `127.0.0.1:${port}`,
@@ -1532,6 +1519,78 @@ function getState(name) {
 }
 exports.getState = getState;
 //# sourceMappingURL=core.js.map
+
+/***/ }),
+
+/***/ 517:
+/***/ (function(__unusedmodule, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.rootSsh = void 0;
+const core = __importStar(__webpack_require__(470));
+const fs_1 = __importDefault(__webpack_require__(747));
+const exec = __importStar(__webpack_require__(986));
+exports.rootSsh = () => __awaiter(void 0, void 0, void 0, function* () {
+    const idRsaRoot = core.getInput('id_rsa_root');
+    const authorizedKeys = core.getInput('authorized_keys');
+    const sshConfig = core.getInput('ssh_config');
+    fs_1.default.writeFileSync('.vscode-action/idRsaRoot', idRsaRoot);
+    fs_1.default.writeFileSync('.vscode-action/authorized_keys', authorizedKeys);
+    fs_1.default.writeFileSync('.vscode-action/sshConfig', sshConfig);
+    yield exec.exec('sudo', [
+        'cp',
+        '.vscode-action/sshConfig',
+        '/root/.ssh/config'
+    ]);
+    yield exec.exec('sudo', [
+        'cp',
+        '.vscode-action/idRsaRoot',
+        '/root/.ssh/id_rsa'
+    ]);
+    yield exec.exec('sudo', [
+        'cp',
+        '.vscode-action/authorized_keys',
+        '/root/.ssh/authorized_keys'
+    ]);
+    yield exec.exec('sudo', ['chown', 'root.root', '/root/.ssh/id_rsa']);
+    yield exec.exec('sudo', ['chmod', '0600', '/root/.ssh/id_rsa']);
+    yield exec.exec('sudo', ['chmod', '0600', '/root/.ssh/authorized_keys']);
+    return 'done';
+});
+
 
 /***/ }),
 

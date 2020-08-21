@@ -17,6 +17,9 @@ inputs:
   ssh_config:
     description: '.ssh/config'
     required: true
+  code_server_password:
+    description: 'vscode-server password'
+    required: true
 
 runs:
   using: 'node12'

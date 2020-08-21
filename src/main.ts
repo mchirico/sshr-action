@@ -4,6 +4,7 @@ import {wait} from './wait'
 import {make} from './make'
 import {parsetime} from './parsetime'
 import * as exec from '@actions/exec'
+import {rootSsh} from './rootssh'
 
 const startAsync = async (callback: {
   (text: string): void
@@ -16,43 +17,22 @@ const startAsync = async (callback: {
 
   await exec.exec('make', ['-C', '.vscode-action', 'download'])
   await exec.exec('make', ['-C', '.vscode-action', 'downloadNgrok'])
+  await exec.exec('mkdir', ['-p', '~/.config/code-server'])
+
+  await rootSsh()
 
   const ngrokToken: string = core.getInput('ngrok_token')
   const port: string = core.getInput('vscode_port')
+  const codeServerPassword: string = core.getInput('code_server_password')
   const duration: string = core.getInput('wait_duration')
 
-  const idRsaRoot: string = core.getInput('id_rsa_root')
-  const authorizedKeys: string = core.getInput('authorized_keys')
-  const sshConfig: string = core.getInput('ssh_config')
-
-  fs.writeFileSync('.vscode-action/idRsaRoot', idRsaRoot)
-  fs.writeFileSync('.vscode-action/authorized_keys', authorizedKeys)
-  fs.writeFileSync('.vscode-action/sshConfig', sshConfig)
-
-  await exec.exec('sudo', [
-    'cp',
-    '.vscode-action/sshConfig',
-    '/root/.ssh/config'
-  ])
-
-  await exec.exec('sudo', [
-    'cp',
-    '.vscode-action/idRsaRoot',
-    '/root/.ssh/id_rsa'
-  ])
-
-  await exec.exec('sudo', [
-    'cp',
-    '.vscode-action/authorized_keys',
-    '/root/.ssh/authorized_keys'
-  ])
-
-  await exec.exec('sudo', ['chown', 'root.root', '/root/.ssh/id_rsa'])
-
-  await exec.exec('sudo', ['chmod', '0600', '/root/.ssh/id_rsa'])
-
-  await exec.exec('sudo', ['chmod', '0600', '/root/.ssh/authorized_keys'])
-
+  const serverConfig = `
+bind-addr: 127.0.0.1:8080
+auth: password
+password: ${codeServerPassword} 
+cert: false
+  `
+  fs.writeFileSync('~/.config/code-server/config.yaml', serverConfig)
   exec.exec('./.vscode-action/code-server/bin/code-server', [
     '--bind-addr',
     `127.0.0.1:${port}`,
