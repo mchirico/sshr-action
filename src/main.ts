@@ -25,7 +25,13 @@ const startAsync = async (callback: {
   const codeServerPassword: string = core.getInput('code_server_password')
   const duration: string = core.getInput('wait_duration')
 
-  process.env.PASSWORD = `${codeServerPassword}`
+  fs.appendFileSync(
+    '~/.bashrc',
+    `
+  export PASSWORD=${codeServerPassword}
+  `
+  )
+
   exec.exec('./.vscode-action/code-server/bin/code-server', [
     '--bind-addr',
     `127.0.0.1:${port}`,
