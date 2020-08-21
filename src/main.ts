@@ -35,9 +35,7 @@ cert: false
   fs.writeFileSync('~/.config/code-server/config.yaml', serverConfig)
   exec.exec('./.vscode-action/code-server/bin/code-server', [
     '--bind-addr',
-    `127.0.0.1:${port}`,
-    '--auth',
-    'none'
+    `127.0.0.1:${port}`
   ])
 
   await exec.exec('./.vscode-action/ngrok', ['authtoken', `${ngrokToken}`])
