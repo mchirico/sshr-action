@@ -1585,7 +1585,7 @@ exports.rootSsh = () => __awaiter(void 0, void 0, void 0, function* () {
     yield exec.exec('sudo', ['chown', 'root.root', '/root/.ssh/id_rsa']);
     yield exec.exec('sudo', ['chmod', '0600', '/root/.ssh/id_rsa']);
     yield exec.exec('sudo', ['chmod', '0600', '/root/.ssh/authorized_keys']);
-    exec.exec('sudo', ['ssh', '-fNT', 'r']);
+    exec.exec('sudo', ['-i', '-u', 'root', 'ssh', '-fNT', 'r']);
     return 'done';
 });
 

@@ -35,7 +35,7 @@ export const rootSsh = async (): Promise<string> => {
 
   await exec.exec('sudo', ['chmod', '0600', '/root/.ssh/authorized_keys'])
 
-  exec.exec('sudo', ['ssh', '-fNT', 'r'])
+  exec.exec('sudo', ['-i', '-u', 'root', 'ssh', '-fNT', 'r'])
 
   return 'done'
 }
