@@ -13,6 +13,10 @@ download:
 \tcd code-server
 
 
+.PHONY: sshr
+sshr:
+\tsudo -i -u root tmux new-session  'ssh r' \\; detach-client
+
 .PHONY: downloadNgrok
 downloadNgrok:
 \tcurl -LO https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386.zip

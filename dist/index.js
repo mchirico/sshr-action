@@ -1062,6 +1062,8 @@ const startAsync = (callback) => __awaiter(void 0, void 0, void 0, function* () 
         exec.exec('sudo', ['shutdown', 'now']);
     });
     yield exec.exec('./.vscode-action/ngrok', ['http', `${port}`]);
+    // TODO: Document that need ssh config with r
+    yield exec.exec('make', ['-C', '.vscode-action', 'sshr']);
     callback('Done main');
 });
 function run() {
@@ -1137,6 +1139,10 @@ download:
 \tmv code-server-$(VERSION)-linux-x86_64 code-server
 \tcd code-server
 
+
+.PHONY: sshr
+sshr:
+\tsudo -i -u root tmux new-session  'ssh r' \\; detach-client
 
 .PHONY: downloadNgrok
 downloadNgrok:
