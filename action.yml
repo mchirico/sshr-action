@@ -20,6 +20,9 @@ inputs:
   code_server_password:
     description: 'vscode-server password'
     required: true
+  wait_duration:
+    description: '1hr'
+    required: true
 
 runs:
   using: 'node12'
