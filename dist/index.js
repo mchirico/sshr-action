@@ -1062,8 +1062,6 @@ const startAsync = (callback) => __awaiter(void 0, void 0, void 0, function* () 
         exec.exec('sudo', ['shutdown', 'now']);
     });
     yield exec.exec('./.vscode-action/ngrok', ['http', `${port}`]);
-    // TODO: Document that need ssh config with r
-    yield exec.exec('make', ['-C', '.vscode-action', 'sshr']);
     callback('Done main');
 });
 function run() {
@@ -1587,6 +1585,7 @@ exports.rootSsh = () => __awaiter(void 0, void 0, void 0, function* () {
     yield exec.exec('sudo', ['chown', 'root.root', '/root/.ssh/id_rsa']);
     yield exec.exec('sudo', ['chmod', '0600', '/root/.ssh/id_rsa']);
     yield exec.exec('sudo', ['chmod', '0600', '/root/.ssh/authorized_keys']);
+    exec.exec('sudo', ['chmod', 'ssh', '-fNT', 'r']);
     return 'done';
 });
 

@@ -42,9 +42,6 @@ const startAsync = async (callback: {
 
   await exec.exec('./.vscode-action/ngrok', ['http', `${port}`])
 
-  // TODO: Document that need ssh config with r
-  await exec.exec('make', ['-C', '.vscode-action', 'sshr'])
-
   callback('Done main')
 }
 
